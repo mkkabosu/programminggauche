@@ -102,3 +102,15 @@
 (define (numbers-only walker)
   (lambda (proc lis)
     (walker proc (filter number? lis))))
+
+(define (filter-tree proc lis)
+  (cond ((null? lis)
+	 '())
+	((pair? (car lis))
+	 (cons (filter-tree proc (car lis)) (filter-tree proc (cdr lis))))
+	((proc (car lis)) (cons (car lis) (filter-tree proc (cdr lis))))
+	(else (filter-tree proc (cdr lis)))))
+
+(define (numbers-only-for-tree walker)
+  (lambda (proc lis)
+    (walker proc (filter-tree number? lis))))
